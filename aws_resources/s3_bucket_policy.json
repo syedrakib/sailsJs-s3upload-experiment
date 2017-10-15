@@ -1,0 +1,22 @@
+{
+    "Version": "2012-10-17",
+    "Id": "Policy1508097098645",
+    "Statement": [
+        {
+            "Sid":"AnonymousReadOnly",
+            "Effect":"Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::<my_s3_bucket_name>/*"
+        },
+        {
+            "Sid": "Stmt1508097092046",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::623822791400:user/<my_iam_user_name>"
+            },
+            "Action": "s3:putObject",
+            "Resource": "arn:aws:s3:::<my_s3_bucket_name>/*"
+        }
+    ]
+}
