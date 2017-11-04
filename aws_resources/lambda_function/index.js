@@ -11,7 +11,7 @@ const S3_HOSTING_URL = process.env.S3_HOSTING_URL;
 
 exports.handler = function lambdaEventHandler (event, context, callback) {
     const requestedFullKey = event.queryStringParameters.key;
-    const match = requestedFullKey.match(/(\d+)x(\d+)\/(.*)/);
+    const match = requestedFullKey.match(/r\/(\d+)x(\d+)\/(.*)/);
     const width = parseInt(match[1], 10);
     const height = parseInt(match[2], 10);
     const objectFilename = match[3];
