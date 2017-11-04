@@ -2,7 +2,7 @@
   "name": "sailsJs-s3upload-lambdaExperiment",
   "private": true,
   "version": "0.0.0",
-  "description": "a Sails application",
+  "description": "Uses SailsJS to upload an image to Amazon S3 bucket and then uses AWS Lambda and Amazon API Gateway to generate resized versions of that image on-the-fly upon request.",
   "keywords": [],
   "dependencies": {
     "dotenv": "^4.0.0",
