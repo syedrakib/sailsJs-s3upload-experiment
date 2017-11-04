@@ -34,7 +34,9 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+  'GET /images/upload': 'ImagesController.uploadForm',
+  'POST /images/upload': 'ImagesController.doImageUpload',
 
   /***************************************************************************
   *                                                                          *
