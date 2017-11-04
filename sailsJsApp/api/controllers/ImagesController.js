@@ -2,9 +2,9 @@ const sails = require('sails');
 const uuid = require('uuid4');
 
 /**
- * FilesController
+ * ImagesController
  *
- * @description :: Server-side logic for managing files
+ * @description :: Server-side logic for managing images
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
@@ -23,7 +23,7 @@ function _determineFileExtension (filename) {
 function index (request, response) {
     response.writeHead(200, {'content-type': 'text/html'});
     response.end(
-        '<form action="/files/upload" enctype="multipart/form-data" method="post">\n' +
+        '<form action="/images/upload" enctype="multipart/form-data" method="post">\n' +
         '\t<label>Username: </label><input type="text" name="username"><br />\n' +
         '\t<label>Avatar: </label><input type="file" name="avatar"><br />\n' +
         '\t<input type="submit" value="Upload" />\n' +
