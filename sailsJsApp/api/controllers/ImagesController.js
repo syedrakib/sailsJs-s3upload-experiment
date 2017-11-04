@@ -50,18 +50,27 @@ function doImageUpload (request, response) {
                 if (err) {
                     return response.negotiate(err);
                 } else {
-                    return response.ok({
-                        message: 'Image uploaded successfully!',
-                        newModelRecord: newModelRecord,
-                        fileMetadata: uploadedFiles[0],
-                    });
+                    // return response.json({
+                    //     message: 'Image uploaded successfully!',
+                    //     newModelRecord: newModelRecord,
+                    //     fileMetadata: uploadedFiles[0],
+                    //     permaLink: `/images/uploaded/${newModelRecord.filename}`,
+                    // });
+                    return response.redirect(`/images/view/${newModelRecord.filename}`);
                 }
             });
         }
     });
 };
 
+function viewImage (request, response) {
+    return response.view('showResizedImages', {
+        imgFilename: request.params.imgFilename,
+    });
+};
+
 module.exports = {
     uploadForm: uploadForm,
     doImageUpload: doImageUpload,
+    viewImage: viewImage,
 };

@@ -1,0 +1,20 @@
+<%- partial('./imageUploadForm.ejs') %>
+
+<%if (typeof(imgFilename) !== 'undefined') { %>
+  <div style="background-color:lightyellow; border:1px solid brown; padding:10px; font-weight:bold;; margin:20px 0px">
+    Resized images for '<%= imgFilename %>' will show up below...
+  </div>
+  <table>
+    <tr>
+      <td>
+        <img style="margin:0px 20px" src="http://<%= this.process.env.AMAZON_S3_BUCKET_NAME %>.s3-website-us-east-1.amazonaws.com/r/128x128/<%= imgFilename %>" />
+      </td>
+      <td>
+        <img style="margin:0px 20px" src="http://<%= this.process.env.AMAZON_S3_BUCKET_NAME %>.s3-website-us-east-1.amazonaws.com/r/256x256/<%= imgFilename %>" />
+      </td>
+      <td>
+        <img style="margin:0px 20px" src="http://<%= this.process.env.AMAZON_S3_BUCKET_NAME %>.s3-website-us-east-1.amazonaws.com/r/512x512/<%= imgFilename %>" />
+      </td>
+    </tr>
+  </table>
+<% } %>

@@ -37,6 +37,7 @@ module.exports.routes = {
   },
   'GET /images/upload': 'ImagesController.uploadForm',
   'POST /images/upload': 'ImagesController.doImageUpload',
+  'GET /images/view/:imgFilename': 'ImagesController.viewImage',
 
   /***************************************************************************
   *                                                                          *
