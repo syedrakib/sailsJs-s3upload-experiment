@@ -25,7 +25,7 @@ function index (request, response) {
     response.end(
         '<form action="/images/upload" enctype="multipart/form-data" method="post">\n' +
         '\t<label>Username: </label><input type="text" name="username"><br />\n' +
-        '\t<label>Avatar: </label><input type="file" name="avatar"><br />\n' +
+        '\t<label>Avatar: </label><input type="file" name="avatar" accept="image/*"><br />\n' +
         '\t<input type="submit" value="Upload" />\n' +
         '</form>'
     );
@@ -49,9 +49,20 @@ function s3upload (request, response) {
         if (err) {
             return response.negotiate(err);
         } else {
-            return response.ok({
-                files: filesUploaded,
-                textParams: request.params.all(),
+            const filePathSavedAs = filesUploaded[0].fd;
+            // eslint-disable-next-line no-undef
+            Images.create({
+                filename: filePathSavedAs.substr(filePathSavedAs.lastIndexOf('/') + 1),
+            }).exec(function onModelCreate (err, newModelRecord) {
+                if (err) {
+                    return response.negotiate(err);
+                } else {
+                    return response.ok({
+                        message: 'Image uploaded successfully!',
+                        newModelRecord: newModelRecord,
+                        fileMetadata: filesUploaded[0],
+                    });
+                }
             });
         }
     });

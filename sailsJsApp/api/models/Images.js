@@ -6,9 +6,9 @@
  */
 
 module.exports = {
-
     attributes: {
-
+        filename: {
+            type: 'string',
+        },
     },
-
 };
