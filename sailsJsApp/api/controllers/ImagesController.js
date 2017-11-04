@@ -20,15 +20,14 @@ function _determineFileExtension (filename) {
     }
 }
 
+function _determineFileNameToBeSavedAs (currentFile, callback) {
+    const filename = _generateRandomFilename();
+    const fileextension = _determineFileExtension(currentFile.filename);
+    callback(null, `${filename}${fileextension}`);
+}
+
 function uploadForm (request, response) {
-    response.writeHead(200, {'content-type': 'text/html'});
-    response.end(
-        '<form action="/images/upload" enctype="multipart/form-data" method="post">\n' +
-        '\t<h3>Upload an awesome image: </h3>\n' +
-        '\t<input type="file" name="awesome_image" accept="image/*"><br />\n' +
-        '\t<p><input type="submit" value="Upload" /></p>\n' +
-        '</form>'
-    );
+    return response.view('imageUploadForm');
 };
 
 function doImageUpload (request, response) {
@@ -37,11 +36,7 @@ function doImageUpload (request, response) {
         key: sails.config.privates.amazonS3.apiKey,
         secret: sails.config.privates.amazonS3.apiSecret,
         bucket: sails.config.privates.amazonS3.bucketName,
-        saveAs: function determineFileNameToBeSavedAs (currentFile, callback) {
-            const filename = _generateRandomFilename();
-            const fileextension = _determineFileExtension(currentFile.filename);
-            callback(null, `${filename}${fileextension}`);
-        },
+        saveAs: _determineFileNameToBeSavedAs,
         dirname: 'originals',
     }, function onImageUpload (err, uploadedFiles) {
         if (err) {
