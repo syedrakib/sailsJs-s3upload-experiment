@@ -1,0 +1,34 @@
+{
+    "Version": "2012-10-17",
+    "Id": "default",
+    "Statement": [
+        {
+            "Sid": "lc-44e63fe8-7df8-4871-ac00-b08ca025ff3f",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "apigateway.amazonaws.com"
+            },
+            "Action": "lambda:InvokeFunction",
+            "Resource": "arn:aws:lambda:us-east-1:623822791400:function:<my_lambda_function_name>",
+            "Condition": {
+                "ArnLike": {
+                    "AWS:SourceArn": "arn:aws:execute-api:us-east-1:623822791400:1i1ylhqjy4/prod/ANY/<my_lambda_function_name>"
+                }
+            }
+        },
+        {
+            "Sid": "lc-37aee2a1-2e4f-4cd3-a8d2-703f232748e4",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "apigateway.amazonaws.com"
+            },
+            "Action": "lambda:InvokeFunction",
+            "Resource": "arn:aws:lambda:us-east-1:623822791400:function:<my_lambda_function_name>",
+            "Condition": {
+                "ArnLike": {
+                    "AWS:SourceArn": "arn:aws:execute-api:us-east-1:623822791400:1i1ylhqjy4/*/*/<my_lambda_function_name>"
+                }
+            }
+        }
+    ]
+}

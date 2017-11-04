@@ -2,38 +2,43 @@
 
 const AWS = require('aws-sdk');
 const S3 = new AWS.S3({
-  signatureVersion: 'v4',
+    signatureVersion: 'v4',
 });
 const Sharp = require('sharp');
 
-const BUCKET = process.env.BUCKET;
-const URL = process.env.URL;
+const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+const S3_HOSTING_URL = process.env.S3_HOSTING_URL;
 
-exports.handler = function(event, context, callback) {
-  const key = event.queryStringParameters.key;
-  const match = key.match(/(\d+)x(\d+)\/(.*)/);
-  const width = parseInt(match[1], 10);
-  const height = parseInt(match[2], 10);
-  const originalKey = match[3];
+exports.handler = function lambdaEventHandler (event, context, callback) {
+    const requestedFullKey = event.queryStringParameters.key;
+    const match = requestedFullKey.match(/(\d+)x(\d+)\/(.*)/);
+    const width = parseInt(match[1], 10);
+    const height = parseInt(match[2], 10);
+    const objectFilename = match[3];
 
-  S3.getObject({Bucket: BUCKET, Key: originalKey}).promise()
-    .then(data => Sharp(data.Body)
-      .resize(width, height)
-      .toFormat('png')
-      .toBuffer()
-    )
-    .then(buffer => S3.putObject({
-        Body: buffer,
-        Bucket: BUCKET,
-        ContentType: 'image/png',
-        Key: key,
-      }).promise()
-    )
-    .then(() => callback(null, {
-        statusCode: '301',
-        headers: {'location': `${URL}/${key}`},
-        body: '',
-      })
-    )
-    .catch(err => callback(err))
-}
+    S3.getObject({
+        Bucket: S3_BUCKET_NAME,
+        Key: `originals/${objectFilename}`,
+    }).promise()
+        .then((data) => {
+            return Sharp(data.Body).resize(width, height).toFormat('png').toBuffer();
+        })
+        .then((buffer) => {
+            return S3.putObject({
+                Body: buffer,
+                Bucket: S3_BUCKET_NAME,
+                ContentType: 'image/png',
+                Key: requestedFullKey,
+            }).promise();
+        })
+        .then(() => {
+            callback(null, {
+                statusCode: '301',
+                headers: {'location': `${S3_HOSTING_URL}/${requestedFullKey}`},
+                body: '',
+            });
+        })
+        .catch((err) => {
+            callback(err);
+        });
+};
